@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image URL Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-image { width: 200px; height: 150px; object-fit: cover; margin: 10px; border: 1px solid #ccc; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>Image URL Test</h1>
+    
+    <div id="status"></div>
+    
+    <h2>Test Images:</h2>
+    <div>
+        <h3>1. Direct Backend URL:</h3>
+        <img src="http://localhost:5000/uploads/images-1753586929022-281851380.png" 
+             alt="Test 1" class="test-image" 
+             onload="logSuccess('Direct backend URL')" 
+             onerror="logError('Direct backend URL')">
+        
+        <h3>2. Placeholder Image:</h3>
+        <img src="https://via.placeholder.com/300x200?text=Test+Image" 
+             alt="Test 2" class="test-image" 
+             onload="logSuccess('Placeholder image')" 
+             onerror="logError('Placeholder image')">
+        
+        <h3>3. Non-existent Image (should show error):</h3>
+        <img src="http://localhost:5000/uploads/nonexistent.png" 
+             alt="Test 3" class="test-image" 
+             onload="logSuccess('Non-existent image')" 
+             onerror="logError('Non-existent image')">
+    </div>
+
+    <script>
+        function logSuccess(message) {
+            const status = document.getElementById('status');
+            status.innerHTML += `<div class="status success">✅ ${message} - Loaded successfully</div>`;
+        }
+        
+        function logError(message) {
+            const status = document.getElementById('status');
+            status.innerHTML += `<div class="status error">❌ ${message} - Failed to load</div>`;
+        }
+        
+        // Test if backend is accessible
+        fetch('http://localhost:5000/')
+            .then(response => {
+                if (response.ok) {
+                    logSuccess('Backend server is accessible');
+                } else {
+                    logError('Backend server returned error');
+                }
+            })
+            .catch(error => {
+                logError('Backend server is not accessible: ' + error.message);
+            });
+    </script>
+</body>
+</html> 
