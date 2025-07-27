@@ -14,7 +14,7 @@ const Home = () => {
 
   const fetchFeaturedProducts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/products?limit=4');
+      const response = await fetch('http://localhost:5001/api/products?limit=4');
       
       if (response.ok) {
         const data = await response.json();
