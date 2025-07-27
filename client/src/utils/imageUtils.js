@@ -9,11 +9,11 @@ export const getImageUrl = (imagePath) => {
     return imagePath;
   }
   
-  // If it's a relative path (starts with /), prepend the backend URL
+  // If it's a relative path (starts with /), use the same origin in production
   if (imagePath.startsWith('/')) {
-    return `http://localhost:5000${imagePath}`;
+    return process.env.NODE_ENV === 'production' ? imagePath : `http://localhost:5000${imagePath}`;
   }
   
   // Otherwise, assume it's a filename and construct the full path
-  return `http://localhost:5000/uploads/${imagePath}`;
+  return process.env.NODE_ENV === 'production' ? `/uploads/${imagePath}` : `http://localhost:5000/uploads/${imagePath}`;
 }; 

@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 // CORS configuration for production
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-frontend-domain.vercel.app', 'http://localhost:3000']
+    ? ['https://your-app-name.vercel.app', 'http://localhost:3000']
     : 'http://localhost:3000',
   credentials: true,
   optionsSuccessStatus: 200
