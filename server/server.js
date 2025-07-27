@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 // CORS configuration for production
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-app-name.vercel.app', 'https://your-app-name.vercel.app', 'http://localhost:3000']
+    ? ['https://my-fullstack-website.vercel.app', 'https://my-fullstack-website-git-master-kyrhyl.vercel.app', 'http://localhost:3000']
     : 'http://localhost:3000',
   credentials: true,
   optionsSuccessStatus: 200
@@ -124,6 +124,50 @@ app.get('/api/health', async (req, res) => {
     res.status(500).json({
       message: 'Health check failed',
       status: 'error',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// Debug endpoint for Vercel troubleshooting
+app.get('/api/debug', async (req, res) => {
+  try {
+    const debugInfo = {
+      environment: process.env.NODE_ENV || 'development',
+      mongodb_uri_set: !!process.env.MONGODB_URI,
+      jwt_secret_set: !!process.env.JWT_SECRET,
+      database_state: mongoose.connection.readyState,
+      database_host: mongoose.connection.host,
+      database_name: mongoose.connection.name,
+      timestamp: new Date().toISOString()
+    };
+
+    // Test database operations
+    if (mongoose.connection.readyState === 1) {
+      try {
+        const User = require('./models/User');
+        const Product = require('./models/Product');
+        
+        const userCount = await User.countDocuments();
+        const productCount = await Product.countDocuments();
+        
+        debugInfo.database_operations = {
+          users_count: userCount,
+          products_count: productCount,
+          status: 'success'
+        };
+      } catch (dbError) {
+        debugInfo.database_operations = {
+          error: dbError.message,
+          status: 'failed'
+        };
+      }
+    }
+
+    res.json(debugInfo);
+  } catch (error) {
+    res.status(500).json({
       error: error.message,
       timestamp: new Date().toISOString()
     });
