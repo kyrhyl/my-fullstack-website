@@ -59,9 +59,75 @@ app.use('/api/users', require('./routes/users'));
 app.use('/api/orders', require('./routes/orders'));
 app.use('/api/cart', require('./routes/cart'));
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ message: 'E-commerce API is running!', status: 'healthy' });
+// Health check endpoint with database connection status
+app.get('/api/health', async (req, res) => {
+  try {
+    // Check database connection
+    const dbState = mongoose.connection.readyState;
+    let dbStatus = 'unknown';
+    let dbConnected = false;
+    
+    switch(dbState) {
+      case 0: // disconnected
+        dbStatus = 'disconnected';
+        break;
+      case 1: // connected
+        dbStatus = 'connected';
+        dbConnected = true;
+        break;
+      case 2: // connecting
+        dbStatus = 'connecting';
+        break;
+      case 3: // disconnecting
+        dbStatus = 'disconnecting';
+        break;
+    }
+    
+    // Get some basic stats
+    let stats = {};
+    if (dbConnected) {
+      try {
+        const User = require('./models/User');
+        const Product = require('./models/Product');
+        
+        const userCount = await User.countDocuments();
+        const productCount = await Product.countDocuments();
+        
+        stats = {
+          users: userCount,
+          products: productCount,
+          database: dbStatus,
+          timestamp: new Date().toISOString()
+        };
+      } catch (error) {
+        stats = {
+          error: 'Failed to get stats',
+          database: dbStatus,
+          timestamp: new Date().toISOString()
+        };
+      }
+    }
+    
+    res.json({
+      message: 'E-commerce API is running!',
+      status: 'healthy',
+      database: {
+        status: dbStatus,
+        connected: dbConnected,
+        host: mongoose.connection.host || 'unknown'
+      },
+      stats: stats,
+      environment: process.env.NODE_ENV || 'development',
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Health check failed',
+      status: 'error',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
 });
 
 // Root endpoint
@@ -84,7 +150,7 @@ const connectDB = async () => {
 };
 
 // Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 const startServer = async () => {
   await connectDB();
   app.listen(PORT, () => {

@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
+import DatabaseStatus from './components/DatabaseStatus';
 
 // Pages
 import Home from './pages/Home';
@@ -34,6 +35,7 @@ function App() {
         <CartProvider>
           <Router>
             <div className="App">
+              <DatabaseStatus />
               <Header />
               <main className="main-content">
                 <Routes>
