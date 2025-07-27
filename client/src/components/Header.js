@@ -74,12 +74,12 @@ const Header = () => {
           </div>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            {isAuthenticated ? (
+            {isAuthenticated && user ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <Link to="/profile" className="user-avatar" style={{
-                  backgroundImage: user.avatar ? `url(${user.avatar})` : 'url(https://via.placeholder.com/40x40?text=U)'
+                  backgroundImage: user?.avatar ? `url(${user.avatar})` : 'url(https://via.placeholder.com/40x40?text=U)'
                 }} />
-                {user.isAdmin && (
+                {user?.isAdmin && (
                   <Link to="/admin" className="nav-link">Admin</Link>
                 )}
                 <button onClick={logout} className="nav-link">Logout</button>
