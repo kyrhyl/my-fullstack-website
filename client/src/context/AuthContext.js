@@ -49,8 +49,9 @@ const authReducer = (state, action) => {
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // Set up axios defaults
-  axios.defaults.baseURL = 'http://localhost:5000';
+  // Set up axios defaults with environment variable
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  axios.defaults.baseURL = apiUrl;
 
   // Load user on mount
   const loadUser = async () => {
