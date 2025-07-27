@@ -229,7 +229,7 @@ const ProductManagement = () => {
         return;
       }
       
-      const response = await fetch('http://localhost:5000/api/admin/products', {
+      const response = await fetch('http://localhost:5001/api/admin/products', {
         headers: {
           'x-auth-token': token
         }
@@ -262,8 +262,8 @@ const ProductManagement = () => {
     
     try {
       const url = editingProduct 
-        ? `http://localhost:5000/api/admin/products/${editingProduct._id || editingProduct.id}`
-        : 'http://localhost:5000/api/admin/products';
+        ? `http://localhost:5001/api/admin/products/${editingProduct._id || editingProduct.id}`
+        : 'http://localhost:5001/api/admin/products';
       
       const method = editingProduct ? 'PUT' : 'POST';
       
@@ -328,7 +328,7 @@ const ProductManagement = () => {
     }
     
     try {
-      const response = await fetch(`http://localhost:5000/api/admin/products/${productId}`, {
+      const response = await fetch(`http://localhost:5001/api/admin/products/${productId}`, {
         method: 'DELETE',
         headers: {
           'x-auth-token': localStorage.getItem('token')

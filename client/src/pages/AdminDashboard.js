@@ -98,7 +98,7 @@ const AdminDashboard = () => {
 
   const fetchDashboardStats = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/admin/dashboard', {
+      const response = await fetch('http://localhost:5001/api/admin/dashboard', {
         headers: {
           'x-auth-token': localStorage.getItem('token')
         }
