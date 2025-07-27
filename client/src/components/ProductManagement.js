@@ -229,7 +229,12 @@ const ProductManagement = () => {
         return;
       }
       
-      const response = await fetch('http://localhost:5001/api/admin/products', {
+      // Use the same base URL logic as other components
+      const baseURL = process.env.NODE_ENV === 'production' 
+        ? '' // In production, API calls go to the same domain
+        : 'http://localhost:5001'; // In development, use localhost:5001
+      
+      const response = await fetch(`${baseURL}/api/admin/products`, {
         headers: {
           'x-auth-token': token
         }
@@ -261,9 +266,14 @@ const ProductManagement = () => {
     }
     
     try {
+      // Use the same base URL logic as other components
+      const baseURL = process.env.NODE_ENV === 'production' 
+        ? '' // In production, API calls go to the same domain
+        : 'http://localhost:5001'; // In development, use localhost:5001
+      
       const url = editingProduct 
-        ? `http://localhost:5001/api/admin/products/${editingProduct._id || editingProduct.id}`
-        : 'http://localhost:5001/api/admin/products';
+        ? `${baseURL}/api/admin/products/${editingProduct._id || editingProduct.id}`
+        : `${baseURL}/api/admin/products`;
       
       const method = editingProduct ? 'PUT' : 'POST';
       
@@ -328,7 +338,12 @@ const ProductManagement = () => {
     }
     
     try {
-      const response = await fetch(`http://localhost:5001/api/admin/products/${productId}`, {
+      // Use the same base URL logic as other components
+      const baseURL = process.env.NODE_ENV === 'production' 
+        ? '' // In production, API calls go to the same domain
+        : 'http://localhost:5001'; // In development, use localhost:5001
+      
+      const response = await fetch(`${baseURL}/api/admin/products/${productId}`, {
         method: 'DELETE',
         headers: {
           'x-auth-token': localStorage.getItem('token')

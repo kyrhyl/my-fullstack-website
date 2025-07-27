@@ -98,7 +98,12 @@ const AdminDashboard = () => {
 
   const fetchDashboardStats = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/admin/dashboard', {
+      // Use the same base URL logic as other components
+      const baseURL = process.env.NODE_ENV === 'production' 
+        ? '' // In production, API calls go to the same domain
+        : 'http://localhost:5001'; // In development, use localhost:5001
+      
+      const response = await fetch(`${baseURL}/api/admin/dashboard`, {
         headers: {
           'x-auth-token': localStorage.getItem('token')
         }

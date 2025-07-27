@@ -14,7 +14,12 @@ const Home = () => {
 
   const fetchFeaturedProducts = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/products?limit=4');
+      // Use the same base URL logic as other components
+    const baseURL = process.env.NODE_ENV === 'production' 
+      ? '' // In production, API calls go to the same domain
+      : 'http://localhost:5001'; // In development, use localhost:5001
+    
+    const response = await fetch(`${baseURL}/api/products?limit=4`);
       
       if (response.ok) {
         const data = await response.json();
