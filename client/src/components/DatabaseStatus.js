@@ -58,7 +58,7 @@ const DatabaseStatus = () => {
     return (
       <div style={{
         position: 'fixed',
-        top: '10px',
+        bottom: '10px',
         right: '10px',
         background: '#f8f9fa',
         padding: '10px 15px',
@@ -80,7 +80,7 @@ const DatabaseStatus = () => {
     return (
       <div style={{
         position: 'fixed',
-        top: '10px',
+        bottom: '10px',
         right: '10px',
         background: '#d4edda',
         color: '#155724',
@@ -110,7 +110,7 @@ const DatabaseStatus = () => {
   return (
     <div style={{
       position: 'fixed',
-      top: '10px',
+      bottom: '10px',
       right: '10px',
       background: '#f8d7da',
       color: '#721c24',
