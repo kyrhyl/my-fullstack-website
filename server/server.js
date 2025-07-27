@@ -179,6 +179,15 @@ app.get('/', (req, res) => {
   res.json({ message: 'E-commerce API is running!' });
 });
 
+// Simple test endpoint
+app.get('/api/test', (req, res) => {
+  res.json({ 
+    message: 'API is working!',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
 // MongoDB connection
 const connectDB = async () => {
   try {
