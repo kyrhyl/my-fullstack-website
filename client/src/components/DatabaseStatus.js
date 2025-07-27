@@ -15,8 +15,27 @@ const DatabaseStatus = () => {
 
   const checkDatabaseStatus = async () => {
     try {
-      const response = await fetch('/api/health');
+      // Use the same base URL logic as other components
+      const baseURL = process.env.NODE_ENV === 'production' 
+        ? '' // In production, API calls go to the same domain
+        : 'http://localhost:5001'; // In development, use localhost:5001
+      
+      const url = `${baseURL}/api/health`;
+      console.log('Checking database status at:', url);
+      
+      const response = await fetch(url);
+      
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Response error text:', errorText);
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
       const data = await response.json();
+      console.log('Health check data:', data);
       
       setStatus({
         loading: false,
@@ -25,6 +44,7 @@ const DatabaseStatus = () => {
         stats: data.stats
       });
     } catch (error) {
+      console.error('Database status check failed:', error);
       setStatus({
         loading: false,
         connected: false,
