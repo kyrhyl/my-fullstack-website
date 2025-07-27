@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 // CORS configuration for production
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-app-name.vercel.app', 'http://localhost:3000']
+    ? ['https://your-app-name.vercel.app', 'https://your-app-name.vercel.app', 'http://localhost:3000']
     : 'http://localhost:3000',
   credentials: true,
   optionsSuccessStatus: 200
@@ -61,12 +61,12 @@ app.use('/api/cart', require('./routes/cart'));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ message: 'E-commerce API is running!", status: 'healthy' });
+  res.json({ message: 'E-commerce API is running!', status: 'healthy' });
 });
 
 // Root endpoint
 app.get('/', (req, res) => {
-  res.json({ message: 'E-commerce API is running!" });
+  res.json({ message: 'E-commerce API is running!' });
 });
 
 // MongoDB connection
